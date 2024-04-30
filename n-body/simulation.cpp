@@ -70,8 +70,11 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
+#pragma omp reduction(+:potential_energy)
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
+#pragma vector always
+#pragma omp reduction(+:potential_energy)
 		for (size_t j = i + 1; j < m_bodies_count; j++)
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
@@ -80,6 +83,8 @@ double simulation::compute_full_energy() const
 		}
 	}
 
+#pragma vector always
+#pragma omp reduction(+:kinetic_energy)
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		kinetic_energy += m_bodies[i].m_mass * pow(m_bodies[i].m_velocity.lenght(), 2);
