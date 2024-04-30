@@ -83,8 +83,7 @@ double simulation::compute_full_energy() const
 		}
 	}
 
-#pragma vector always
-#pragma omp reduction(+:kinetic_energy)
+#pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		kinetic_energy += m_bodies[i].m_mass * pow(m_bodies[i].m_velocity.lenght(), 2);
