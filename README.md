@@ -26,6 +26,30 @@ $$
 
 ## Report
 
+### Шаг 0: Анализ
+
+Изначально компилятор векторизовал цикл с расчетом потенциальной энергии и раскрутил цикл с расчетом кинетической. Автоматическия оптимизация других циклов не удалась.
+
+![](img/default_opt_report.png)
+
+Summary:
+
+![](img/default_summary.png)
+
+Roofline:
+
+![](img/default_roofline.png)
+
+Hotspots:
+
+![](img/default_hotspots.png)
+
+Memory Access Pattern Анализ выявил неэффективный доступ к памяти:
+
+![](img/default_map.png)
+
 Timing (10 000 объектов):
-default:  13508.2 мс
-vectorization: 
+
+* default:  13508.2 мс
+
+* vectorization: 
