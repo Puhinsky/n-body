@@ -1,10 +1,10 @@
 #pragma once
 
+#include "body.h"
+#include "random.h"
+#include "vector3.h"
 #include <iostream>
 #include <vector>
-#include "body.h"
-#include "vector3.h"
-#include "random.h"
 
 constexpr auto G = 6.67259e-11;
 constexpr auto EPSILON = 1e-6;

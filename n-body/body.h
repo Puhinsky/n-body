@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include "vector3.h"
+#include <vector>
 
 constexpr auto F1_KOEFF = 2.0 / 3.0;
 constexpr auto F2_KOEFF = 1.0 / 3.0;
