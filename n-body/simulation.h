@@ -12,7 +12,8 @@ constexpr auto EPSILON = 1e-6;
 class simulation
 {
 private:
-	std::vector<body> m_bodies;
+	body* m_bodies;
+	size_t m_bodies_count;
 	double m_deltaTime;
 	double m_simulationTime;
 
@@ -21,6 +22,6 @@ private:
 	double compute_full_energy() const;
 
 public:
-	simulation(size_t bodiesCount);
-	void run(double deltaTime, double simulationTime);
+	simulation(size_t bodies_count);
+	void run(double delta_time, double simulation_time);
 };
