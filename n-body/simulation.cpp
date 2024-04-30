@@ -73,6 +73,7 @@ double simulation::compute_full_energy() const
 #pragma omp reduction(+:potential_energy)
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
+#pragma vector aligned
 #pragma vector always
 #pragma omp reduction(+:potential_energy)
 		for (size_t j = i + 1; j < m_bodies_count; j++)

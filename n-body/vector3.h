@@ -31,13 +31,13 @@ inline vector3<T> vector3<T>::operator*(const T& other) const
 template<typename T>
 inline vector3<T> vector3<T>::operator+(const vector3& other) const
 {
-	return {x + other.x, y + other.y, z + other.z};
+	return { x + other.x, y + other.y, z + other.z };
 }
 
 template<typename T>
 inline vector3<T> vector3<T>::operator-(const vector3& other) const
 {
-	return {x - other.x, y - other.y, z - other.z};
+	return { x - other.x, y - other.y, z - other.z };
 }
 
 template<typename T>
