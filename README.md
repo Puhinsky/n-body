@@ -1,5 +1,7 @@
 # n-body
 
+## Theory
+
 $$
 f_1=f(x_n,y_n),
 $$
@@ -21,3 +23,9 @@ $$
 [N-Body на пайтоне](https://prappleizer.github.io/Tutorials/RK4/RK4_Tutorial.html)
 
 [Тут про общую энергию](https://www.math.arizona.edu/~dwang/485home-10/N-body.pdf)
+
+## Report
+
+Timing (10 000 объектов):
+default:  13508.2 мс
+vectorization: 
