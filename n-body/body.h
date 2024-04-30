@@ -1,0 +1,22 @@
+#pragma once
+
+#include <vector>
+#include "vector3.h"
+
+constexpr auto F1_KOEFF = 2.0 / 3.0;
+constexpr auto F2_KOEFF = 1.0 / 3.0;
+constexpr auto KR_KOEFF = 1.0 / 4.0;
+
+class body
+{
+private:
+	double3 compute(double dt, double3 diff);
+
+public:
+	double3 m_position;
+	double3 m_velocity;
+	double3 m_acceleration;
+	double m_mass;
+
+	void update_position_and_velocity(double deltaTime);
+};
