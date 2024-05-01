@@ -20,6 +20,7 @@ void simulation::run(double delta_time, double simulation_time)
 
 void simulation::init()
 {
+#pragma omp parallel for
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		m_bodies[i].m_position = uniform_dist<double>(-0.5, 0.5);
@@ -41,11 +42,13 @@ void simulation::simulate()
 	{
 		auto iteration_start = clock();
 
+#pragma omp parallel for
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
 			m_bodies[i].update_position_and_velocity(m_deltaTime);
 		}
 
+#pragma omp parallel for
 		for (size_t my = 0; my < m_bodies_count; my++)
 		{
 			for (size_t other = 0; other < m_bodies_count; other++)
@@ -60,6 +63,7 @@ void simulation::simulate()
 			}
 		}
 
+#pragma omp simd
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
 			m_bodies[i].m_acceleration = accelerations[i];
@@ -78,12 +82,12 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
-#pragma omp reduction(+:potential_energy)
+#pragma omp parallel for
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
-#pragma vector aligned
+#pragma omp simd reduction(+:potential_energy)
 #pragma vector always
-#pragma omp reduction(+:potential_energy)
+#pragma vector aligned
 		for (size_t j = i + 1; j < m_bodies_count; j++)
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
