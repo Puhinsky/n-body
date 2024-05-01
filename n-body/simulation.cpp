@@ -41,13 +41,22 @@ void simulation::simulate()
 	{
 		auto iteration_start = clock();
 
+		ANNOTATE_SITE_BEGIN(VELOCITY_AND_POSITION)
+
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
+			ANNOTATE_ITERATION_TASK(VELOCITY_AND_POSITION)
 			m_bodies[i].update_position_and_velocity(m_deltaTime);
 		}
 
+		ANNOTATE_SITE_END(VELOCITY_AND_POSITION)
+
+		ANNOTATE_SITE_BEGIN(ACCELERATION)
+
 		for (size_t my = 0; my < m_bodies_count; my++)
 		{
+			ANNOTATE_ITERATION_TASK(ACCELERATION)
+
 			for (size_t other = 0; other < m_bodies_count; other++)
 			{
 				if (my == other)
@@ -59,6 +68,8 @@ void simulation::simulate()
 				accelerations[my] = m_bodies[my].m_acceleration + direction * force_koeff;
 			}
 		}
+
+		ANNOTATE_SITE_END(ACCELERATION)
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
@@ -78,9 +89,13 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
+	ANNOTATE_SITE_BEGIN(ENERGY)
+
 #pragma omp reduction(+:potential_energy)
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
+		ANNOTATE_ITERATION_TASK(ENERGY)
+
 #pragma vector aligned
 #pragma vector always
 #pragma omp reduction(+:potential_energy)
@@ -91,6 +106,8 @@ double simulation::compute_full_energy() const
 			potential_energy += force_koeff / distance_koeff;
 		}
 	}
+
+	ANNOTATE_SITE_END(ENERGY)
 
 #pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
