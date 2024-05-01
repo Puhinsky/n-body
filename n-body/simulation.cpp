@@ -35,6 +35,7 @@ void simulation::init()
 void simulation::simulate()
 {
 	size_t iterationCount = (size_t)(m_simulationTime / m_deltaTime) + 1;
+	alignas(ALIGN) double3* __restrict accelerations = new double3[m_bodies_count];
 
 	for (size_t iteration = 1; iteration < iterationCount; iteration++)
 	{
@@ -55,14 +56,21 @@ void simulation::simulate()
 				auto direction = (m_bodies[my].m_position - m_bodies[other].m_position);
 				auto inverse_koeff = pow(direction.lenght(), 3) + EPSILON;
 				auto force_koeff = m_bodies[my].m_mass * G / inverse_koeff;
-				m_bodies[my].m_acceleration += direction * force_koeff;
+				accelerations[my] = m_bodies[my].m_acceleration + direction * force_koeff;
 			}
+		}
+
+		for (size_t i = 0; i < m_bodies_count; i++)
+		{
+			m_bodies[i].m_acceleration = accelerations[i];
 		}
 
 		auto iteration_time = clock() - iteration_start;
 
 		cout << "Step " << iteration << ". Total energy: " << compute_full_energy() << " J. Iteration time: " << iteration_time << " ms" << endl;
 	}
+
+	delete[] accelerations;
 }
 
 double simulation::compute_full_energy() const
