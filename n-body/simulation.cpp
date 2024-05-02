@@ -29,6 +29,8 @@ void simulation::init()
 		m_bodies[i].m_mass = random(1.0, 5.0);
 	}
 
+	m_potential_energies = new double[m_bodies_count];
+
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
 	cout << "Total system energy: " << compute_full_energy() << " J" << endl;
 }
@@ -82,6 +84,12 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
+#pragma omp simd
+	for (size_t i = 0; i < m_bodies_count; i++)
+	{
+		m_potential_energies[i] = 0;
+	}
+
 #pragma omp parallel for
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
@@ -92,8 +100,14 @@ double simulation::compute_full_energy() const
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
 			auto distance_koeff = (m_bodies[i].m_position - m_bodies[j].m_position).lenght() + EPSILON;
-			potential_energy += force_koeff / distance_koeff;
+			m_potential_energies[i] += force_koeff / distance_koeff;
 		}
+	}
+
+#pragma omp simd reduction(+:potential_energy)
+	for (size_t i = 0; i < m_bodies_count; i++)
+	{
+		potential_energy += m_potential_energies[i];
 	}
 
 #pragma unroll
