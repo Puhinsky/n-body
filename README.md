@@ -68,7 +68,7 @@ Memory Access Pattern Анализ выявил неэффективный до�
 
  Были добавлены выравнивание ```alignas(64)``` и оптимизация ```__restrict```
 
- [](img/vectorization_roofline.png)
+![](img/vectorization_roofline.png)
 
  ### Шаг 2: Оптимизация доступа к памяти
 
@@ -80,7 +80,7 @@ Memory Access Pattern Анализ выявил неэффективный до�
 
  ### Шаг 3: Добавление многопоточности
 
- [](img/parallel_suitability.png)
+![](img/parallel_suitability.png)
 
 |non mp|generation mp|pos and vel mp|accel mp|energy mp|
 |---|---|---|---|---|
@@ -100,15 +100,24 @@ energy mp – parallel
 
 Total time: 948.6 ms
 
-[](img/parallel_utilization.png)
+Utilization report:
 
-[](img/parallel_bottom-up.png)
+![](img/parallel_utilization.png)
 
-[](img/parallel_data_race.png)
+Bottom-up report:
 
-[](img/parallel_memory_leaks.png)
+![](img/parallel_bottom-up.png)
 
-[](img/parallel_roofline.png)
+Data race check report:
+
+![](img/parallel_data_race.png)
+
+Memory leaks check report:
+
+![](img/parallel_memory_leaks.png)
+
+Final roofline:
+![](img/parallel_roofline.png)
 
 
 Timing (10 000 объектов):
