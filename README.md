@@ -82,7 +82,17 @@ Memory Access Pattern Анализ выявил неэффективный до�
 
  [](img/parallel_suitability.png)
 
+|non mp|generation mp|pos and vel mp|accel mp|energy mp|
+|---|---|---|---|---|
+|6450.4 ms|6521.9 ms|7211.2 ms|4160.9 ms|4970.5 ms|
 
+generation mp – unroll
+
+pos and vel mp – simd
+
+accel mp – parallel
+
+energy mp – parallel
 
 Timing (10 000 объектов):
 
