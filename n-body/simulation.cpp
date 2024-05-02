@@ -16,6 +16,8 @@ void simulation::run(double delta_time, double simulation_time)
 	m_simulationTime = simulation_time;
 	init();
 	simulate();
+
+	delete[] m_bodies;
 }
 
 void simulation::init()
