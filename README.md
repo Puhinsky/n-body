@@ -28,7 +28,7 @@ $$
 
 ### Шаг 0: Анализ
 
-Изначально компилятор векторизовал цикл с расчетом потенциальной энергии и раскрутил цикл с расчетом кинетической. Автоматическия оптимизация других циклов не удалась.
+Изначально компилятор векторизовал цикл с расчетом потенциальной энергии и раскрутил цикл с расчетом кинетической. Также цикл для расчета усорений был предикатно оптимизирован. Автоматическия оптимизация остальных циклов не удалась.
 
 ![](img/default_opt_report.png)
 
@@ -94,14 +94,29 @@ accel mp – parallel
 
 energy mp – parallel
 
-Total time: 926.6 ms
+|atomic|reduction|
+|---|---|
+|1717.5 ms|948.6 ms|
+
+Total time: 948.6 ms
 
 [](img/parallel_utilization.png)
 
 [](img/parallel_bottom-up.png)
 
+[](img/parallel_data_race.png)
+
+[](img/parallel_memory_leaks.png)
+
+[](img/parallel_roofline.png)
+
+
 Timing (10 000 объектов):
 
 * default:  13508.2 мс
 
-* vectorization: 
+* vectorization: 13046.6 ms
+
+* opt memory access pattern: 6733.5 ms
+
+* parallel: 948.6 ms
