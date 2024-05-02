@@ -20,13 +20,19 @@ void simulation::run(double delta_time, double simulation_time)
 
 void simulation::init()
 {
+	ANNOTATE_SITE_BEGIN(GENERATION)
+
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
+		ANNOTATE_ITERATION_TASK(GENERATION)
+
 		m_bodies[i].m_position = uniform_dist<double>(-0.5, 0.5);
 		m_bodies[i].m_velocity = uniform_dist<double>(-0.5, 0.5);
 		m_bodies[i].m_acceleration = { 0.0, 0.0, 0.0 };
 		m_bodies[i].m_mass = random(1.0, 5.0);
 	}
+
+	ANNOTATE_SITE_END(GENERATION)
 
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
 	cout << "Total system energy: " << compute_full_energy() << " J" << endl;
@@ -91,14 +97,13 @@ double simulation::compute_full_energy() const
 
 	ANNOTATE_SITE_BEGIN(ENERGY)
 
-#pragma omp reduction(+:potential_energy)
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
 		ANNOTATE_ITERATION_TASK(ENERGY)
 
+#pragma omp simd reduction(+:potential_energy)
 #pragma vector aligned
 #pragma vector always
-#pragma omp reduction(+:potential_energy)
 		for (size_t j = i + 1; j < m_bodies_count; j++)
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
