@@ -20,11 +20,11 @@ void simulation::run(double delta_time, double simulation_time)
 
 void simulation::init()
 {
-	ANNOTATE_SITE_BEGIN(GENERATION)
+	ANNOTATE_SITE_BEGIN(GENERATION_SITE);
 
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
-		ANNOTATE_ITERATION_TASK(GENERATION)
+		ANNOTATE_ITERATION_TASK(GENERATION);
 
 		m_bodies[i].m_position = uniform_dist<double>(-0.5, 0.5);
 		m_bodies[i].m_velocity = uniform_dist<double>(-0.5, 0.5);
@@ -32,7 +32,7 @@ void simulation::init()
 		m_bodies[i].m_mass = random(1.0, 5.0);
 	}
 
-	ANNOTATE_SITE_END(GENERATION)
+	ANNOTATE_SITE_END();
 
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
 	cout << "Total system energy: " << compute_full_energy() << " J" << endl;
@@ -47,21 +47,21 @@ void simulation::simulate()
 	{
 		auto iteration_start = clock();
 
-		ANNOTATE_SITE_BEGIN(VELOCITY_AND_POSITION)
+		ANNOTATE_SITE_BEGIN(VELOCITY_AND_POSITION_SITE);
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			ANNOTATE_ITERATION_TASK(VELOCITY_AND_POSITION)
+			ANNOTATE_ITERATION_TASK(VELOCITY_AND_POSITION);
 			m_bodies[i].update_position_and_velocity(m_deltaTime);
 		}
 
-		ANNOTATE_SITE_END(VELOCITY_AND_POSITION)
+		ANNOTATE_SITE_END();
 
-		ANNOTATE_SITE_BEGIN(ACCELERATION)
+		ANNOTATE_SITE_BEGIN(ACCELERATION_SITE);
 
 		for (size_t my = 0; my < m_bodies_count; my++)
 		{
-			ANNOTATE_ITERATION_TASK(ACCELERATION)
+			ANNOTATE_ITERATION_TASK(ACCELERATION);
 
 			for (size_t other = 0; other < m_bodies_count; other++)
 			{
@@ -75,7 +75,7 @@ void simulation::simulate()
 			}
 		}
 
-		ANNOTATE_SITE_END(ACCELERATION)
+		ANNOTATE_SITE_END();
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
@@ -95,11 +95,11 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
-	ANNOTATE_SITE_BEGIN(ENERGY)
+	ANNOTATE_SITE_BEGIN(ENERGY_SITE);
 
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
-		ANNOTATE_ITERATION_TASK(ENERGY)
+		ANNOTATE_ITERATION_TASK(ENERGY);
 
 #pragma omp simd reduction(+:potential_energy)
 #pragma vector aligned
@@ -112,7 +112,7 @@ double simulation::compute_full_energy() const
 		}
 	}
 
-	ANNOTATE_SITE_END(ENERGY)
+	ANNOTATE_SITE_END();
 
 #pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
