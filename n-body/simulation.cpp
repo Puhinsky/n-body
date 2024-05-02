@@ -20,7 +20,7 @@ void simulation::run(double delta_time, double simulation_time)
 
 void simulation::init()
 {
-#pragma omp parallel for
+#pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		m_bodies[i].m_position = uniform_dist<double>(-0.5, 0.5);
