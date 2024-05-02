@@ -18,11 +18,11 @@ $$
 y_{n+1}=y_n+\frac{h}{4}(f_1+2f_2+f_3)
 $$
 
-[Метод Хойна/Рунге-Кутта, 3 порядок и не только](https://old.mipt.ru/upload/medialibrary/87d/rk.pdf)
+[Метод Хойна/Рунге-Кутта, 2, 3, 4 порядок ](https://old.mipt.ru/upload/medialibrary/87d/rk.pdf)
 
-[N-Body на пайтоне](https://prappleizer.github.io/Tutorials/RK4/RK4_Tutorial.html)
+[N-Body на python](https://prappleizer.github.io/Tutorials/RK4/RK4_Tutorial.html)
 
-[Тут про общую энергию](https://www.math.arizona.edu/~dwang/485home-10/N-body.pdf)
+[Вычисление общей энергии системы n-тел](https://www.math.arizona.edu/~dwang/485home-10/N-body.pdf)
 
 ## Отчет
 
