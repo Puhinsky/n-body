@@ -16,6 +16,8 @@ void simulation::run(double delta_time, double simulation_time)
 	m_simulationTime = simulation_time;
 	init();
 	simulate();
+
+	delete[] m_bodies;
 }
 
 void simulation::init()
@@ -78,12 +80,12 @@ double simulation::compute_full_energy() const
 	double potential_energy = 0.0;
 	double kinetic_energy = 0.0;
 
-#pragma omp reduction(+:potential_energy)
+#pragma omp simd reduction(+:potential_energy)
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
+#pragma omp simd reduction(+:potential_energy)
 #pragma vector aligned
 #pragma vector always
-#pragma omp reduction(+:potential_energy)
 		for (size_t j = i + 1; j < m_bodies_count; j++)
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
