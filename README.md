@@ -1,6 +1,6 @@
 # n-body
 
-## Theory
+## Теория
 
 $$
 f_1=f(x_n,y_n),
@@ -24,7 +24,7 @@ $$
 
 [Тут про общую энергию](https://www.math.arizona.edu/~dwang/485home-10/N-body.pdf)
 
-## Report
+## Отчет
 
 ### Шаг 0: Анализ
 
@@ -77,7 +77,8 @@ AVX оказался себя эффективнее, чем AVX2.
 
 Были добавлены выравнивание ```alignas(64)``` и оптимизация ```__restrict```
 
-Roofline:
+#### Roofline:
+
 ![](img/vectorization_roofline.png)
 
 ### Шаг 2: Оптимизация доступа к памяти
@@ -151,9 +152,9 @@ Roofline:
 
 |Шаг|Время, мс|Прирост, %|
 |---|---|---|
-|default|13508,2|0|
-|vectorization|13046,6|3,54|
-|memory access pattern|6733,5|100,61|
-|parallel|948,6|1324,01|
+|0. default|13508,2|0|
+|1. vectorization|13046,6|3,54|
+|2. memory access pattern|6733,5|100,61|
+|3. parallel|948,6|1324,01|
 
 ### В результате ПО было ускорено в более чем 14 раз.
