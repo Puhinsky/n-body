@@ -94,6 +94,12 @@ accel mp – parallel
 
 energy mp – parallel
 
+Total time: 926.6 ms
+
+[](img/parallel_utilization.png)
+
+[](img/parallel_bottom-up.png)
+
 Timing (10 000 объектов):
 
 * default:  13508.2 мс
