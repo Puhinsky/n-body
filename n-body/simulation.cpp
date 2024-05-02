@@ -42,7 +42,7 @@ void simulation::simulate()
 	{
 		auto iteration_start = clock();
 
-#pragma omp parallel for
+#pragma omp simd
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
 			m_bodies[i].update_position_and_velocity(m_deltaTime);
