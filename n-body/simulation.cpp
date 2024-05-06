@@ -30,8 +30,10 @@ void simulation::init()
 		m_bodies[i].m_mass = random(1.0, 5.0);
 	}
 
+	m_last_energy = compute_full_energy();
+
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
-	cout << "Total system energy: " << compute_full_energy() << " J" << endl;
+	cout << "Total system energy: " << m_last_energy << " J" << endl;
 }
 
 void simulation::simulate()
@@ -63,8 +65,12 @@ void simulation::simulate()
 		}
 
 		auto iteration_time = clock() - iteration_start;
+		auto energy = compute_full_energy();
+		auto delta_energy = abs(energy - m_last_energy);
 
-		cout << "Step " << iteration << ". Total energy: " << compute_full_energy() << " J. Iteration time: " << iteration_time << " ms" << endl;
+		cout << "Step " << iteration << ". Total energy: " << energy << " J. Delta energy: " << delta_energy << " J. Iteration time: " << iteration_time << " ms" << endl;
+		
+		m_last_energy = energy;
 	}
 }
 
