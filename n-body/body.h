@@ -10,8 +10,8 @@ constexpr auto KR_KOEFF = 1.0 / 4.0;
 class body
 {
 private:
-	double3 m_position_f[3];
-	double3 m_velocity_f[3];
+	double3 m_position_f[2];
+	double3 m_velocity_f[2];
 
 	double3 m_base_position;
 	double3 m_base_velocity;
