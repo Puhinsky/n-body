@@ -34,6 +34,7 @@ void simulation::init()
 
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
 	cout << "Total system energy: " << m_init_energy << " J" << endl;
+	cout << "System impulse: " << compute_impulse() << " kg*m/s" << endl;
 }
 
 void simulation::simulate()
@@ -74,7 +75,8 @@ void simulation::simulate()
 	auto absolute_deviation = abs(energy - m_init_energy);
 	auto relative_deviation = absolute_deviation / energy;
 
-	cout << "Deviation: " << relative_deviation * 100 << " %" << endl;
+	cout << "Energy deviation: " << relative_deviation * 100 << " %" << endl;
+	cout << "Final impulse: " << compute_impulse() << " kg*m/s" << endl;
 }
 
 double simulation::compute_full_energy() const
@@ -94,8 +96,20 @@ double simulation::compute_full_energy() const
 
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
-		kinetic_energy += m_bodies[i].m_mass * pow(m_bodies[i].m_velocity.lenght(), 2);
+		kinetic_energy += m_bodies[i].compute_2k_energy();
 	}
 
 	return potential_energy + 0.5 * kinetic_energy;
+}
+
+double simulation::compute_impulse() const
+{
+	double3 impulse = {0.0, 0.0, 0.0};
+
+	for (size_t i = 0; i < m_bodies_count; i++)
+	{
+		impulse += m_bodies[i].compute_impulse();
+	}
+
+	return impulse.lenght();
 }

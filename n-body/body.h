@@ -19,4 +19,7 @@ public:
 	double m_mass;
 
 	void update_position_and_velocity(double deltaTime);
+
+	double compute_2k_energy() const;
+	double3 compute_impulse() const;
 };

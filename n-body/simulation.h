@@ -4,7 +4,6 @@
 #include "random.h"
 #include "vector3.h"
 #include <iostream>
-#include <vector>
 
 constexpr auto G = 6.67259e-11;
 constexpr auto EPSILON = 1e-6;
@@ -21,6 +20,7 @@ private:
 	void init();
 	void simulate();
 	double compute_full_energy() const;
+	double compute_impulse() const;
 
 public:
 	simulation(size_t bodies_count);

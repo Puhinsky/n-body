@@ -14,3 +14,13 @@ void body::update_position_and_velocity(double deltaTime)
 	m_position += compute(deltaTime, m_velocity) * KR_KOEFF;
 	m_velocity += compute(deltaTime, m_acceleration) * KR_KOEFF;
 }
+
+double body::compute_2k_energy() const
+{
+	return m_mass * pow(m_velocity.lenght(), 2);
+}
+
+double3 body::compute_impulse() const
+{
+	return m_velocity * m_mass;
+}
