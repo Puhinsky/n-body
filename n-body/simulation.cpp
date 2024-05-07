@@ -48,8 +48,8 @@ void simulation::simulate()
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			m_bodies[i].m_acceleration = { 0.0, 0.0, 0.0 };
 			m_bodies[i].update_position_and_velocity(m_deltaTime);
+			m_bodies[i].m_acceleration = { 0.0, 0.0, 0.0 };
 		}
 
 		for (size_t my = 0; my < m_bodies_count; my++)
