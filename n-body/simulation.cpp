@@ -108,6 +108,9 @@ double simulation::compute_full_energy() const
 
 	for (size_t i = 0; i < m_bodies_count - 1; i++)
 	{
+#pragma omp simd reduction(+:potential_energy)
+#pragma vector aligned
+#pragma vector always
 		for (size_t j = i + 1; j < m_bodies_count; j++)
 		{
 			auto force_koeff = m_bodies[i].m_mass * m_bodies[j].m_mass * G;
@@ -116,8 +119,7 @@ double simulation::compute_full_energy() const
 		}
 	}
 
-#pragma omp simd reduction(+:kinetic_energy)
-#pragma vector always
+#pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		kinetic_energy += m_bodies[i].compute_2k_energy();
@@ -130,8 +132,7 @@ double simulation::compute_impulse() const
 {
 	double3 impulse = { 0.0, 0.0, 0.0 };
 
-#pragma omp simd reduction(+:impulse)
-#pragma vector always
+#pragma unroll
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		impulse += m_bodies[i].compute_impulse();
