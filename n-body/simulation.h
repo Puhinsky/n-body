@@ -18,10 +18,12 @@ private:
 	size_t m_bodies_count;
 	double m_deltaTime;
 	double m_simulationTime;
+	double m_init_energy;
 
 	void init();
 	void simulate();
 	double compute_full_energy() const;
+	double compute_impulse() const;
 
 public:
 	simulation(size_t bodies_count);
