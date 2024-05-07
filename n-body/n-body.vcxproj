@@ -123,7 +123,7 @@
       <UseProcessorExtensions>AVX</UseProcessorExtensions>
       <Mtune>Haswell</Mtune>
       <GenerateAlternateCodePaths>None</GenerateAlternateCodePaths>
-      <OpenMP>GenerateParallelCode</OpenMP>
+      <OpenMP>GenerateSequentialCode</OpenMP>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
