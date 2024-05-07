@@ -122,7 +122,7 @@
       <OptimizationDiagnosticLevel>Level3</OptimizationDiagnosticLevel>
       <UseProcessorExtensions>AVX</UseProcessorExtensions>
       <Mtune>No</Mtune>
-      <OpenMP>GenerateSequentialCode</OpenMP>
+      <OpenMP>GenerateParallelCode</OpenMP>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
