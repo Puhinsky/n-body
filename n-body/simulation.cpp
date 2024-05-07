@@ -7,12 +7,12 @@ simulation::simulation(size_t bodies_count)
 	m_bodies_count = bodies_count;
 	m_bodies = new body[bodies_count];
 	m_simulationTime = 0.0;
-	m_deltaTime = 0.0;
+	m_delta_time = 0.0;
 }
 
 void simulation::run(double delta_time, double simulation_time)
 {
-	m_deltaTime = delta_time;
+	m_delta_time = delta_time;
 	m_simulationTime = simulation_time;
 	init();
 	simulate();
@@ -39,32 +39,33 @@ void simulation::init()
 
 void simulation::simulate()
 {
-	size_t iterationCount = (size_t)(m_simulationTime / m_deltaTime) + 1;
+	size_t iterationCount = (size_t)(m_simulationTime / m_delta_time) + 1;
 	double energy = 0.0;
 
 	for (size_t iteration = 1; iteration < iterationCount; iteration++)
 	{
 		auto iteration_start = clock();
+		auto fracted_delta_time = m_delta_time / 3.0;
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			m_bodies[i].pre_compute_f1(m_deltaTime);
+			m_bodies[i].pre_compute_f1(fracted_delta_time);
 		}
 
 		compute_accelerations();
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			m_bodies[i].pre_compute_f2(m_deltaTime);
+			m_bodies[i].pre_compute_f2(fracted_delta_time);
 		}
 
 		compute_accelerations();
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			m_bodies[i].update_position_and_velocity(m_deltaTime);
+			m_bodies[i].update_position_and_velocity(fracted_delta_time);
 		}
-		
+
 		energy = compute_full_energy();
 		auto iteration_time = clock() - iteration_start;
 
@@ -125,7 +126,7 @@ double simulation::compute_full_energy() const
 
 double simulation::compute_impulse() const
 {
-	double3 impulse = {0.0, 0.0, 0.0};
+	double3 impulse = { 0.0, 0.0, 0.0 };
 
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{

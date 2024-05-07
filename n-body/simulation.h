@@ -13,7 +13,7 @@ class simulation
 private:
 	body* m_bodies;
 	size_t m_bodies_count;
-	double m_deltaTime;
+	double m_delta_time;
 	double m_simulationTime;
 	double m_init_energy;
 
