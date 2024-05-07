@@ -120,6 +120,9 @@
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <Optimization>MaxSpeedHighLevel</Optimization>
       <OptimizationDiagnosticLevel>Level3</OptimizationDiagnosticLevel>
+      <UseProcessorExtensions>AVX</UseProcessorExtensions>
+      <Mtune>No</Mtune>
+      <OpenMP>GenerateSequentialCode</OpenMP>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

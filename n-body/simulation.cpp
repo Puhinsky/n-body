@@ -116,6 +116,8 @@ double simulation::compute_full_energy() const
 		}
 	}
 
+#pragma omp simd reduction(+:kinetic_energy)
+#pragma vector always
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		kinetic_energy += m_bodies[i].compute_2k_energy();
@@ -128,6 +130,8 @@ double simulation::compute_impulse() const
 {
 	double3 impulse = { 0.0, 0.0, 0.0 };
 
+#pragma omp simd reduction(+:impulse)
+#pragma vector always
 	for (size_t i = 0; i < m_bodies_count; i++)
 	{
 		impulse += m_bodies[i].compute_impulse();
