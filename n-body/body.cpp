@@ -1,16 +1,31 @@
 #include "body.h"
 
-double3 body::compute(double dt, double3 diff)
+void body::pre_compute_f1(double delta_time)
 {
-	auto f1 = diff * dt;
-	auto f2 = (diff + f1 * F1_KOEFF) * dt;
-	auto f3 = (diff - f1 * F2_KOEFF + f2) * dt;
+	m_base_position = m_position;
+	m_base_velocity = m_velocity;
 
-	return f1 + f2 * 2.0 + f3;
+	m_position_f[0] = compute_f1(delta_time, m_velocity);
+	m_velocity_f[0] = compute_f1(delta_time, m_acceleration);
+
+	m_position += m_position_f[0];
+	m_velocity += m_velocity_f[0];
 }
 
-void body::update_position_and_velocity(double deltaTime)
+void body::pre_compute_f2(double delta_time)
 {
-	m_position += compute(deltaTime, m_velocity) * KR_KOEFF;
-	m_velocity += compute(deltaTime, m_acceleration) * KR_KOEFF;
+	m_position_f[1] = compute_f2(delta_time, m_velocity, m_position_f[0]);
+	m_velocity_f[1] = compute_f2(delta_time, m_acceleration, m_velocity_f[0]);
+
+	m_position += m_position_f[1];
+	m_velocity += m_velocity_f[1];
+}
+
+void body::update_position_and_velocity(double delta_time)
+{
+	auto delta_position = compute(delta_time, m_velocity, m_position_f[0], m_position_f[1]) * KR_KOEFF;
+	auto delta_velocity = compute(delta_time, m_acceleration, m_velocity_f[0], m_velocity_f[1]) * KR_KOEFF;
+
+	m_position = m_base_position + delta_position;
+	m_velocity = m_base_velocity + delta_velocity;
 }

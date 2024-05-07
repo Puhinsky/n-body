@@ -48,22 +48,21 @@ void simulation::simulate()
 
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
-			m_bodies[i].update_position_and_velocity(m_deltaTime);
-			m_bodies[i].m_acceleration = { 0.0, 0.0, 0.0 };
+			m_bodies[i].pre_compute_f1(m_deltaTime);
 		}
 
-		for (size_t my = 0; my < m_bodies_count; my++)
-		{
-			for (size_t other = 0; other < m_bodies_count; other++)
-			{
-				if (my == other)
-					continue;
+		compute_accelerations();
 
-				auto direction = (m_bodies[my].m_position - m_bodies[other].m_position);
-				auto inverse_koeff = pow(direction.lenght(), 3) + EPSILON;
-				auto force_koeff = m_bodies[my].m_mass * G / inverse_koeff;
-				m_bodies[my].m_acceleration += direction * force_koeff;
-			}
+		for (size_t i = 0; i < m_bodies_count; i++)
+		{
+			m_bodies[i].pre_compute_f2(m_deltaTime);
+		}
+
+		compute_accelerations();
+
+		for (size_t i = 0; i < m_bodies_count; i++)
+		{
+			m_bodies[i].update_position_and_velocity(m_deltaTime);
 		}
 		
 		energy = compute_full_energy();
@@ -77,6 +76,28 @@ void simulation::simulate()
 
 	cout << "Energy deviation: " << relative_deviation * 100 << " %" << endl;
 	cout << "Final impulse: " << compute_impulse() << " kg*m/s" << endl;
+}
+
+void simulation::compute_accelerations()
+{
+	for (size_t i = 0; i < m_bodies_count; i++)
+	{
+		m_bodies[i].m_acceleration = { 0.0, 0.0, 0.0 };
+	}
+
+	for (size_t my = 0; my < m_bodies_count; my++)
+	{
+		for (size_t other = 0; other < m_bodies_count; other++)
+		{
+			if (my == other)
+				continue;
+
+			auto direction = (m_bodies[my].m_position - m_bodies[other].m_position);
+			auto inverse_koeff = pow(direction.lenght(), 3) + EPSILON;
+			auto force_koeff = m_bodies[my].m_mass * G / inverse_koeff;
+			m_bodies[my].m_acceleration += direction * force_koeff;
+		}
+	}
 }
 
 double simulation::compute_full_energy() const

@@ -19,6 +19,7 @@ private:
 
 	void init();
 	void simulate();
+	void compute_accelerations();
 	double compute_full_energy() const;
 	double compute_impulse() const;
 
