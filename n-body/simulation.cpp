@@ -30,15 +30,16 @@ void simulation::init()
 		m_bodies[i].m_mass = random(1.0, 5.0);
 	}
 
-	m_last_energy = compute_full_energy();
+	m_init_energy = compute_full_energy();
 
 	cout << "Init simulation for " << m_bodies_count << " bodies" << endl;
-	cout << "Total system energy: " << m_last_energy << " J" << endl;
+	cout << "Total system energy: " << m_init_energy << " J" << endl;
 }
 
 void simulation::simulate()
 {
 	size_t iterationCount = (size_t)(m_simulationTime / m_deltaTime) + 1;
+	double energy = 0.0;
 
 	for (size_t iteration = 1; iteration < iterationCount; iteration++)
 	{
@@ -63,15 +64,17 @@ void simulation::simulate()
 				m_bodies[my].m_acceleration += direction * force_koeff;
 			}
 		}
-
-		auto iteration_time = clock() - iteration_start;
-		auto energy = compute_full_energy();
-		auto delta_energy = abs(energy - m_last_energy);
-
-		cout << "Step " << iteration << ". Total energy: " << energy << " J. Delta energy: " << delta_energy << " J. Iteration time: " << iteration_time << " ms" << endl;
 		
-		m_last_energy = energy;
+		energy = compute_full_energy();
+		auto iteration_time = clock() - iteration_start;
+
+		cout << "Step " << iteration << ". Total energy: " << energy << " J. Iteration time: " << iteration_time << " ms" << endl;
 	}
+
+	auto absolute_deviation = abs(energy - m_init_energy);
+	auto relative_deviation = absolute_deviation / energy;
+
+	cout << "Deviation: " << relative_deviation * 100 << " %" << endl;
 }
 
 double simulation::compute_full_energy() const

@@ -16,7 +16,7 @@ private:
 	size_t m_bodies_count;
 	double m_deltaTime;
 	double m_simulationTime;
-	double m_last_energy;
+	double m_init_energy;
 
 	void init();
 	void simulate();
