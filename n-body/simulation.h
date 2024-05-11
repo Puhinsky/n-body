@@ -13,7 +13,6 @@ class simulation
 {
 private:
 	alignas(ALIGN) body* __restrict m_bodies;
-	alignas(ALIGN) double* __restrict m_potential_energies;
 	size_t m_bodies_count;
 	double m_delta_time;
 	double m_simulationTime;
