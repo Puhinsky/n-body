@@ -47,6 +47,8 @@ void simulation::simulate()
 		auto iteration_start = clock();
 		auto fracted_delta_time = m_delta_time / 3.0;
 
+		compute_accelerations();
+
 		for (size_t i = 0; i < m_bodies_count; i++)
 		{
 			m_bodies[i].pre_compute_f1(fracted_delta_time);
